@@ -1,0 +1,11 @@
+<div class="container-fluid">
+    <div class="row">
+        <nb-note>    
+            <textarea *ngIf="note" [(ngModel)]="note.text"></textarea>
+        </nb-note>
+    </div>
+    <div class="row">
+        <button type = "button" class = "btn btn-info">Save</button>
+        <button type = "button" class = "btn btn-default">Cancel</button>
+    </div>
+</div>
