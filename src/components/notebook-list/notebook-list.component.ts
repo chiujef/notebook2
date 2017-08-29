@@ -9,6 +9,7 @@ import { Notebook, NotebookStoreService } from '../shared/index';
     styleUrls: ['./notebook-list.component.css']
 })
 export class NotebookListComponent implements OnInit {
+    isNotebookSelected: boolean;
     selectedNotebookId: number;
     notebooks: Notebook[];
     createMode: boolean;
@@ -18,11 +19,13 @@ export class NotebookListComponent implements OnInit {
     ) {
         this.notebooks = new Array<Notebook>();
         this.createMode = false;
+        this.isNotebookSelected = false;
     }
 
     ngOnInit(): void {
-        this.notebookStoreService.getSelectedNotebookStore().subscribe((notebookId) => {
-            this.selectedNotebookId = notebookId;
+        this.notebookStoreService.getSelectedNotebookStore().subscribe((notebookSelectedOperation) => {
+            this.isNotebookSelected = notebookSelectedOperation.isSelected;
+            this.selectedNotebookId = notebookSelectedOperation.notebookId;
         });
 
         this.notebookStoreService.getNotebookStore().subscribe((notebooks) => {
@@ -30,14 +33,6 @@ export class NotebookListComponent implements OnInit {
         });
 
         this.notebookStoreService.getAllNotebook();
-    }
-
-    isNotebookSelected(): boolean {
-        if (this.selectedNotebookId > 0) {
-            return true;
-        }
-
-        return false;
     }
 
     notebookClick(notebookId: number) {
@@ -58,7 +53,7 @@ export class NotebookListComponent implements OnInit {
     }
 
     deleteNotebookClick() {
-        if (this.isNotebookSelected()) {
+        if (this.isNotebookSelected) {
             this.notebookStoreService.deleteNotebook(this.selectedNotebookId);
             this.router.navigateByUrl('/');
         }

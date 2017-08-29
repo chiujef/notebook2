@@ -4,20 +4,22 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Rx';
 
 import { Notebook } from '../models/notebook';
+import { NotebookSelectedOperation } from '../operations/notebook-selected.operation';
 import { NotebookService } from '../services/notebook.service';
 
 
 /* Client storage for the notebook objects */
 @Injectable()
 export class NotebookStoreService {
-    private selectedNotebookStoreSubject: BehaviorSubject<number> = new BehaviorSubject(0);
+    private selectedNotebookStoreSubject: BehaviorSubject<NotebookSelectedOperation> =
+        new BehaviorSubject(new NotebookSelectedOperation(false, 0));
 
     private notebookStoreSubject: BehaviorSubject<Notebook[]> = new BehaviorSubject(new Array<Notebook>());
     private notebookStorage: Notebook[] = new Array<Notebook>();
 
     constructor(private notebookService: NotebookService) { }
 
-    getSelectedNotebookStore(): Observable<number> {
+    getSelectedNotebookStore(): Observable<NotebookSelectedOperation> {
         return this.selectedNotebookStoreSubject.asObservable();
     }
 
@@ -26,7 +28,7 @@ export class NotebookStoreService {
     }
 
     setSelectedNotebook(notebookId: number): void {
-        this.selectedNotebookStoreSubject.next(notebookId);
+        this.selectedNotebookStoreSubject.next(new NotebookSelectedOperation(true, notebookId));
     }
 
     addNotebook(newNotebook: Notebook): void {

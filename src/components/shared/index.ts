@@ -2,6 +2,9 @@
 export { Note } from './models/note';
 export { Notebook } from './models/notebook';
 
+/* Notifications Export */
+export { NotebookSelectedOperation } from './operations/notebook-selected.operation';
+
 /* Services Export */
 export { NoteService } from './services/note.service';
 export { NotebookService } from './services/notebook.service';

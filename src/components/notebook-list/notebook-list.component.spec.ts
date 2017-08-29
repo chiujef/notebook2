@@ -5,7 +5,11 @@ import { Observable } from 'rxjs/Rx';
 
 import { NotebookListComponent } from './notebook-list.component';
 
-import { Notebook, NotebookStoreService } from '../shared/index';
+import {
+    Notebook,
+    NotebookSelectedOperation,
+    NotebookStoreService
+} from '../shared/index';
 
 
 describe('Notebook List Component tests', () => {
@@ -14,7 +18,7 @@ describe('Notebook List Component tests', () => {
     };
 
     class MockNotebookStoreService {
-        getSelectedNotebookStore: () => Observable<number>;
+        getSelectedNotebookStore: () => Observable<NotebookSelectedOperation>;
         getNotebookStore: () => Observable<Notebook[]>;
         setSelectedNotebook: (notebookId: number) => void;
         addNotebook: (newNotebook: Notebook) => void;
@@ -44,7 +48,7 @@ describe('Notebook List Component tests', () => {
             mockNotebookStoreService = TestBed.get(NotebookStoreService);
 
             mockNotebookStoreService.getSelectedNotebookStore = jasmine.createSpy('getSelectedNotebookStore')
-                .and.returnValue(Observable.of(1));
+                .and.returnValue(Observable.of(new NotebookSelectedOperation(true, 1)));
             mockNotebookStoreService.getNotebookStore = jasmine.createSpy('getNotebookStore')
                 .and.returnValue(Observable.of(new Array<Notebook>()));
             mockNotebookStoreService.getAllNotebook = jasmine.createSpy('getAllNotebook');
@@ -81,35 +85,6 @@ describe('Notebook List Component tests', () => {
         expect(mockNotebookStoreService.getAllNotebook).toHaveBeenCalled();
     });
 
-    describe('isNotebookSelected', () => {
-        it('should return true if selected notebook id is greater than 0', async() => {
-            mockNotebookStoreService.getSelectedNotebookStore = jasmine.createSpy('getSelectedNotebookStore')
-                .and.returnValue(Observable.of(1));
-
-            fixture.detectChanges();
-
-            expect(notebookListComponent.isNotebookSelected()).toBeTruthy();
-        });
-
-        it('should return false if selected notebook id is equal to 0', async() => {
-            mockNotebookStoreService.getSelectedNotebookStore = jasmine.createSpy('getSelectedNotebookStore')
-                .and.returnValue(Observable.of(0));
-
-            fixture.detectChanges();
-
-            expect(notebookListComponent.isNotebookSelected()).toBeFalsy();
-        });
-
-        it('should return false if selected notebook id is less than 0', async() => {
-            mockNotebookStoreService.getSelectedNotebookStore = jasmine.createSpy('getSelectedNotebookStore')
-                .and.returnValue(Observable.of(-1));
-
-            fixture.detectChanges();
-
-            expect(notebookListComponent.isNotebookSelected()).toBeFalsy();
-        });
-    });
-
     describe('notebookClick tests', () => {
         it('should set the selected notebook store based on the notebookId selected', async() => {
             mockNotebookStoreService.setSelectedNotebook = jasmine.createSpy('setSelectedNotebook');
@@ -125,7 +100,7 @@ describe('Notebook List Component tests', () => {
         it('should set createMode flag to true', () => {
             notebookListComponent.addNewNotebookClick();
 
-            expect(notebookListComponent.createMode).toBeTruthy();
+            expect(notebookListComponent.createMode).toBe(true);
         });
     });
 
@@ -141,7 +116,7 @@ describe('Notebook List Component tests', () => {
         it('should set createMode flag to false', async() => {
             notebookListComponent.createNotebookClick('test');
 
-            expect(notebookListComponent.createMode).toBeFalsy();
+            expect(notebookListComponent.createMode).toBe(false);
         });
     });
 
@@ -149,7 +124,7 @@ describe('Notebook List Component tests', () => {
         it('should set createMode flag to false', () => {
             notebookListComponent.cancelCreateNotebookClick();
 
-            expect(notebookListComponent.createMode).toBeFalsy();
+            expect(notebookListComponent.createMode).toBe(false);
         });
     });
 
@@ -174,13 +149,13 @@ describe('Notebook List Component tests', () => {
 
         it('should not delete the notebook if there are no notebook selected', async() => {
             mockNotebookStoreService.getSelectedNotebookStore = jasmine.createSpy('getSelectedNotebookStore')
-                .and.returnValue(Observable.of(0));
+                .and.returnValue(Observable.of(new NotebookSelectedOperation(false, 0)));
             mockNotebookStoreService.deleteNotebook = jasmine.createSpy('deleteNotebook');
 
             fixture.detectChanges();
             notebookListComponent.deleteNotebookClick();
 
-            expect(mockNotebookStoreService.deleteNotebook).toHaveBeenCalledTimes(0);
+            expect(mockNotebookStoreService.deleteNotebook).not.toHaveBeenCalled();
         });
     });
 });

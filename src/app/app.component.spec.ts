@@ -1,5 +1,6 @@
 import { TestBed, async } from '@angular/core/testing';
 import { HttpModule } from '@angular/http';
+import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { AppComponent } from './app.component';
@@ -35,7 +36,8 @@ describe('AppComponent', () => {
       ],
       imports: [
         HttpModule,
-        RouterTestingModule
+        RouterTestingModule,
+        FormsModule
       ],
       providers: [
         NotebookService,

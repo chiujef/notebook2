@@ -45,6 +45,10 @@ export class NoteStoreService {
         if (!selectedNote) {
             this.noteService.getNote(noteId).subscribe((note) => {
                 selectedNote = note;
+                if (!selectedNote) {
+                    selectedNote = new Note();
+                }
+
                 this.selectedNoteStoreSubject.next(this.deepCopy(selectedNote));
             });
         } else {

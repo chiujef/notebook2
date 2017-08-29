@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Rx';
 
 import {
     Notebook,
+    NotebookSelectedOperation,
     NotebookService
 } from '../index';
 import { NotebookStoreService } from './notebook-store.service';
@@ -11,7 +12,7 @@ import { NotebookStoreService } from './notebook-store.service';
 describe('Notebook Store Service tests', () => {
 
     class MockNotebookService {
-        setSelectedNotebook: (notebookId: number) => Observable<number>;
+        setSelectedNotebook: (notebookId: number) => Observable<NotebookSelectedOperation>;
         addNotebook: (notebook: Notebook) => Observable<Notebook>;
         getAllNotebook: () => Observable<Notebook[]>;
         updateNotebook: (notebook: Notebook) => Observable<Notebook>;
@@ -46,8 +47,16 @@ describe('Notebook Store Service tests', () => {
         it('should set the selected notebook store', async() => {
             notebookStoreService.setSelectedNotebook(1);
 
-            notebookStoreService.getSelectedNotebookStore().subscribe((notebookId) => {
-                expect(notebookId).toBe(1);
+            notebookStoreService.getSelectedNotebookStore().subscribe((notebookSelectedOperation) => {
+                expect(notebookSelectedOperation.notebookId).toBe(1);
+            });
+        });
+
+        it('should set the selected notebook store to true when selected notebook is set', async() => {
+            notebookStoreService.setSelectedNotebook(1);
+
+            notebookStoreService.getSelectedNotebookStore().subscribe((notebookSelectedOperation) => {
+                expect(notebookSelectedOperation.isSelected).toBe(true);
             });
         });
     });

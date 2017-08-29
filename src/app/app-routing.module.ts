@@ -11,6 +11,7 @@ const routes: Routes = [
   { path: '', redirectTo: 'notebooks', pathMatch: 'full' },
   { path: 'notebooks',  component: NoteListComponent },
   { path: 'notebooks/:notebookId',  component: NoteListComponent },
+  { path: 'notes/:noteId',  component: NoteEditComponent },
   { path: 'notes/:noteId',  component: NoteEditComponent }
 ];
 

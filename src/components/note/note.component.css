@@ -1,13 +1,15 @@
 div.well {
     display: inline-block;
-	width: 100%;
+    width: 100%;
+    height: 100%;
 }
 
 div.nb-note-list-paper {
     border: 1px solid #EEEEEE;
     box-shadow: 1px 1px 0 #DDDDDD;
     font-family: 'Marck Script',cursive;
-    margin: 2% auto;
+    /* TODO: Clean this */
+    /* margin: 2% auto; */
     padding: 11px 20px 0 70px;
     resize: none;
     

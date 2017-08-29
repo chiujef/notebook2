@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { Observable } from 'rxjs/Rx';
 
@@ -34,6 +35,7 @@ describe('Note List Component tests', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [ NoteComponent, NoteListComponent ],
+            imports: [ RouterTestingModule ],
             providers: [
                 {
                     provide: ActivatedRoute,

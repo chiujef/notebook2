@@ -90,6 +90,18 @@ describe('Note Store Service tests', () => {
                 expect(note).toBe(NOTE_DATA_1);
             });
         });
+
+        it('should return a new note when note is not found', async() => {
+            mockNoteService.getNote = jasmine.createSpy('getNote')
+                .and.returnValue(Observable.of(null));
+
+            noteStoreService.getNote(1);
+
+            noteStoreService.getSelectedNoteStore().subscribe((note) => {
+                expect(mockNoteService.getNote).toHaveBeenCalledTimes(1);
+                expect(note).toBeTruthy();
+            });
+        });
     });
 
     describe('updateNote tests', () => {
